@@ -1,6 +1,5 @@
 package com.chunklite.optimizer;
 
-import com.chunklite.ChuckLite;
 import com.chunklite.ChuckLiteConfig;
 import com.chunklite.mixin.ChunkStorageAccessor;
 import com.chunklite.mixin.ClientChunkCacheMixin;
@@ -9,14 +8,15 @@ import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Central coordinator for client-side chunk optimizations.
  */
-@OnlyIn(Dist.CLIENT)
 public final class ClientChunkOptimizer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("ChuckLite");
 
     public final ChunkLoadThrottle throttle = new ChunkLoadThrottle();
 
@@ -51,7 +51,7 @@ public final class ClientChunkOptimizer {
             joinTicks++;
             if (joinTicks > 200) {
                 joining = false;
-                ChuckLite.LOGGER.info("Join-flood window ended.");
+                LOGGER.info("Join-flood window ended.");
             }
         }
 
@@ -69,7 +69,7 @@ public final class ClientChunkOptimizer {
         joining = true;
         joinTicks = 0;
         gcCooldown = 0;
-        ChuckLite.LOGGER.debug("ChuckLite state reset (disconnect).");
+        LOGGER.debug("ChuckLite state reset (disconnect).");
     }
 
     public boolean isJoining() {
@@ -155,7 +155,7 @@ public final class ClientChunkOptimizer {
         }
 
         if (unloaded > 0) {
-            ChuckLite.LOGGER.debug("Directional unload: dropped {} chunks", unloaded);
+            LOGGER.debug("Directional unload: dropped {} chunks", unloaded);
         }
     }
 
@@ -193,7 +193,7 @@ public final class ClientChunkOptimizer {
         }
 
         if (unloaded > 0) {
-            ChuckLite.LOGGER.warn("Memory pressure ({}%): unloaded {} chunks",
+            LOGGER.warn("Memory pressure ({}%): unloaded {} chunks",
                     Math.round(usedPct), unloaded);
             // Only call System.gc() if the cooldown has expired to avoid
             // spamming full GCs every 20 ticks while memory is high.

@@ -1,9 +1,10 @@
 package com.chunklite.mixin;
 
-import com.chunklite.ChuckLite;
 import com.chunklite.ChuckLiteConfig;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.util.Mth;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,8 +16,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ClientChunkCache.class)
 public abstract class ClientChunkCacheMixin {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger("ChuckLite");
+
     @Shadow
-    public Object storage;  // ClientChunkCache.Storage — shadowed as Object to avoid package-private type
+    public Object storage;  // ClientChunkCache.Storage -- shadowed as Object to avoid package-private type
 
     /** Public accessor for the storage field. */
     public static Object getStorage(ClientChunkCache cache) {
@@ -40,7 +43,7 @@ public abstract class ClientChunkCacheMixin {
         int max = ChuckLiteConfig.maxRenderDistance();
         int clamped = Mth.clamp(rawDistance, min, max);
         if (clamped != rawDistance) {
-            ChuckLite.LOGGER.debug("Clamped render distance {} → {}", rawDistance, clamped);
+            LOGGER.debug("Clamped render distance {} → {}", rawDistance, clamped);
         }
         return clamped;
     }
