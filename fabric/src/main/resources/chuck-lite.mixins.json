@@ -1,0 +1,14 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.chunklite.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "chuck-lite.refmap.json",
+    "client": [
+        "ClientChunkCacheMixin",
+        "ChunkStorageAccessor"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

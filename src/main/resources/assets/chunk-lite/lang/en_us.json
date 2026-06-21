@@ -1,0 +1,6 @@
+{
+    "chunk-lite.command.status": "ChuckLite status",
+    "chunk-lite.command.stats": "Show chunk statistics",
+    "chunk-lite.command.unload": "Force-unload chunks outside radius",
+    "chunk-lite.command.reload": "Reload config from disk"
+}

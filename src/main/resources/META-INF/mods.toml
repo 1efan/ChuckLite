@@ -1,0 +1,39 @@
+# ChuckLite — Lightweight chunk optimization mod for Minecraft Forge
+# https://github.com/1efan/ChuckLite
+
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/1efan/ChuckLite/issues"
+
+[[mods]]
+modId = "chunk-lite"
+version = "${file.jarVersion}"
+displayName = "ChuckLite"
+logoFile = "chuck-lite-icon.png"
+credits = "Thanks to the Minecraft optimization community"
+authors = "1efan"
+description = '''
+Lightweight chunk optimization mod. Reduces memory overhead and improves frame times by intelligently managing chunk load cycles.
+
+Features:
+- Smart chunk preloading based on player movement patterns
+- Reduced memory footprint through aggressive cache cleanup
+- Compatible with Sodium, Lithium, and other optimization mods
+
+Configure via .minecraft/config/chuck-lite.properties
+'''
+
+[[dependencies.chunk-lite]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[47,)"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.chunk-lite]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.20.1,1.21)"
+    ordering = "NONE"
+    side = "CLIENT"
