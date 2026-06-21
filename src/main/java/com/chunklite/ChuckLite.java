@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * effect immediately — no restart needed.</p>
  *
  * @author 1efan
- * @version 1.2.0
+ * @version 1.01
  */
 @Mod(ChuckLite.MOD_ID)
 public class ChuckLite {
@@ -72,7 +72,7 @@ public class ChuckLite {
         // Touch config to ensure defaults are written.
         ChuckLiteConfig.reload();
         optimizer = new ClientChunkOptimizer();
-        LOGGER.info("ChuckLite v{} optimizer ready.", "1.2.0");
+        LOGGER.info("ChuckLite v{} optimizer ready.", "1.01");
     }
 
     @SubscribeEvent

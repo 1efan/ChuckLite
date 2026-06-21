@@ -52,7 +52,7 @@ public final class ChuckLiteCommands {
             return 0;
         }
 
-        send(source, "§6ChuckLite §av1.2.0§r — by §b1efan§r");
+        send(source, "§6ChuckLite §av1.01§r — by §b1efan§r");
         send(source, "  Throttling : " + boolStr(ChuckLiteConfig.throttleEnabled())
                 + " §7(" + ChuckLiteConfig.maxChunkLoadsPerTick() + "/tick)§r");
         send(source, "  Directional: " + boolStr(ChuckLiteConfig.directionalUnload())
