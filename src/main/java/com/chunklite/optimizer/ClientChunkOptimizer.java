@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,7 +148,7 @@ public final class ClientChunkOptimizer {
 
                 double dot = (lookNormX * toCX / toLen) + (lookNormZ * toCZ / toLen);
                 if (dot < retentionCos) {
-                    cache.drop(new ChunkPos(cx, cz));
+                    cache.drop(cx, cz);
                     unloaded++;
                 }
             }
@@ -187,7 +186,7 @@ public final class ClientChunkOptimizer {
                 int cx = playerCX + dx;
                 int cz = playerCZ + dz;
                 if (s.chunklite$getChunk(cx, cz) != null) {
-                    cache.drop(new ChunkPos(cx, cz));
+                    cache.drop(cx, cz);
                     unloaded++;
                 }
             }
@@ -261,7 +260,7 @@ public final class ClientChunkOptimizer {
                 int cx = playerCX + dx;
                 int cz = playerCZ + dz;
                 if (s.chunklite$getChunk(cx, cz) != null) {
-                    cache.drop(new ChunkPos(cx, cz));
+                    cache.drop(cx, cz);
                     unloaded++;
                 }
             }
