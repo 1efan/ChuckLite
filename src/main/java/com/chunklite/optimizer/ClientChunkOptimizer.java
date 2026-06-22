@@ -154,8 +154,8 @@ public final class ClientChunkOptimizer {
         if (s == null) return;
         int r = s.chunklite$getViewRange();
         int keepRadius = Math.max(2, r / 2);
-        int playerCX = ((int) player.getX()) >> 4;
-        int playerCZ = ((int) player.getZ()) >> 4;
+        int playerCX = player.blockPosition().getX() >> 4;
+        int playerCZ = player.blockPosition().getZ() >> 4;
 
         ClientChunkCache cache = level.getChunkSource();
         int unloaded = 0;
@@ -225,8 +225,8 @@ public final class ClientChunkOptimizer {
         if (s == null) return 0;
 
         int r = s.chunklite$getViewRange();
-        int playerCX = ((int) player.getX()) >> 4;
-        int playerCZ = ((int) player.getZ()) >> 4;
+        int playerCX = player.blockPosition().getX() >> 4;
+        int playerCZ = player.blockPosition().getZ() >> 4;
 
         ClientChunkCache cache = level.getChunkSource();
         int unloaded = 0;
