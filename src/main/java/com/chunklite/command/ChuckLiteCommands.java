@@ -11,17 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * Client-side commands for ChuckLite.
- *
- * <ul>
- *   <li>{@code /chunk-lite} — show current status.</li>
- *   <li>{@code /chunk-lite stats} — dump detailed statistics.</li>
- *   <li>{@code /chunk-lite unload [radius]} — force-unload chunks
- *       outside the given radius (default 4).</li>
- *   <li>{@code /chunk-lite reload} — re-read config from disk.</li>
- * </ul>
- */
 @OnlyIn(Dist.CLIENT)
 public final class ChuckLiteCommands {
 
@@ -44,15 +33,13 @@ public final class ChuckLiteCommands {
         );
     }
 
-    // ── Subcommand implementations ─────────────────────────────
-
     private static int status(CommandSourceStack source) {
         if (ChuckLite.optimizer == null) {
             send(source, "§cChuckLite optimizer not initialized.");
             return 0;
         }
 
-        send(source, "§6ChuckLite §av1.01§r — by §b1efan§r");
+        send(source, "§6ChuckLite §av1.01§r - by §b1efan§r");
         send(source, "  Throttling : " + boolStr(ChuckLiteConfig.throttleEnabled())
                 + " §7(" + ChuckLiteConfig.maxChunkLoadsPerTick() + "/tick)§r");
         send(source, "  Directional: " + boolStr(ChuckLiteConfig.directionalUnload())
@@ -60,7 +47,7 @@ public final class ChuckLiteCommands {
         send(source, "  Memory-aware: " + boolStr(ChuckLiteConfig.memoryAware())
                 + " §7(threshold: " + ChuckLiteConfig.memoryThresholdPct() + "%)§r");
         send(source, "  RD override: " + boolStr(ChuckLiteConfig.overrideRenderDistance())
-                + " §7(" + ChuckLiteConfig.minRenderDistance() + "–" + ChuckLiteConfig.maxRenderDistance() + ")§r");
+                + " §7(" + ChuckLiteConfig.minRenderDistance() + "-" + ChuckLiteConfig.maxRenderDistance() + ")§r");
         send(source, "§7Use §f/chunk-lite stats§7 for live numbers.§r");
         return 1;
     }
@@ -99,8 +86,6 @@ public final class ChuckLiteCommands {
         send(source, "§aChuckLite config reloaded from disk.§r");
         return 1;
     }
-
-    // ── Helpers ────────────────────────────────────────────────
 
     private static void send(CommandSourceStack source, String msg) {
         source.sendSystemMessage(Component.literal(msg));

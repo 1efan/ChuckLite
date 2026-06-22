@@ -11,9 +11,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Central coordinator for client-side chunk optimizations.
- */
 public final class ClientChunkOptimizer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("ChuckLite");
@@ -24,10 +21,7 @@ public final class ClientChunkOptimizer {
     private boolean joining = true;
     private int joinTicks = 0;
 
-    /** Cooldown between forced GC calls, in ticks (30 seconds at 20 tps). */
     private int gcCooldown = 0;
-
-    // ── Public API ─────────────────────────────────────────────
 
     public void tick() {
         Minecraft mc = Minecraft.getInstance();
@@ -76,9 +70,6 @@ public final class ClientChunkOptimizer {
         return joining;
     }
 
-    // ── Helpers ────────────────────────────────────────────────
-
-    /** Null-safe storage accessor. Returns null during world transitions. */
     private static ChunkStorageAccessor storage(ClientLevel level) {
         ClientChunkCache cache = level.getChunkSource();
         if (cache == null) return null;
@@ -86,7 +77,6 @@ public final class ClientChunkOptimizer {
         return raw != null ? (ChunkStorageAccessor) raw : null;
     }
 
-    /** Count loaded chunks by scanning the array. Cheap -- only called for stats. */
     private static int countLoaded(ChunkStorageAccessor s) {
         int r = s.chunklite$getViewRange();
         int cx = s.chunklite$getViewCenterX();
@@ -101,8 +91,6 @@ public final class ClientChunkOptimizer {
         }
         return count;
     }
-
-    // ── Optimization routines ──────────────────────────────────
 
     private void directionalUnload(ClientLevel level, LocalPlayer player) {
         ChunkStorageAccessor s = storage(level);
@@ -119,16 +107,12 @@ public final class ClientChunkOptimizer {
         double retentionCos = Math.cos(Math.toRadians(
                 ChuckLiteConfig.forwardRetentionAngle() / 2.0));
 
-        // Use the storage center, not player position, so the iteration
-        // exactly covers the loaded chunk array. The center tracks the
-        // player closely (updated by vanilla every tick).
         int centerCX = s.chunklite$getViewCenterX();
         int centerCZ = s.chunklite$getViewCenterZ();
 
         ClientChunkCache cache = level.getChunkSource();
         int unloaded = 0;
 
-        // Only touch the outer ring (distance >= r - 1).
         for (int dx = -r; dx <= r; dx++) {
             for (int dz = -r; dz <= r; dz++) {
                 int dist = Math.max(Math.abs(dx), Math.abs(dz));
@@ -140,7 +124,6 @@ public final class ClientChunkOptimizer {
                 LevelChunk chunk = s.chunklite$getChunk(cx, cz);
                 if (chunk == null) continue;
 
-                // Direction to chunk from storage center (proxy for player).
                 double toCX = dx * 16.0 + 8.0;
                 double toCZ = dz * 16.0 + 8.0;
                 double toLen = Math.sqrt(toCX * toCX + toCZ * toCZ);
@@ -195,16 +178,12 @@ public final class ClientChunkOptimizer {
         if (unloaded > 0) {
             LOGGER.warn("Memory pressure ({}%): unloaded {} chunks",
                     Math.round(usedPct), unloaded);
-            // Only call System.gc() if the cooldown has expired to avoid
-            // spamming full GCs every 20 ticks while memory is high.
             if (gcCooldown <= 0) {
                 System.gc();
-                gcCooldown = 600; // 30 seconds at 20 tps
+                gcCooldown = 600;
             }
         }
     }
-
-    // ── Stats / Commands ───────────────────────────────────────
 
     public String getStats() {
         Minecraft mc = Minecraft.getInstance();

@@ -10,25 +10,18 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-/**
- * Hooks into {@link ClientChunkCache}.
- */
 @Mixin(ClientChunkCache.class)
 public abstract class ClientChunkCacheMixin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("ChuckLite");
 
     @Shadow
-    public Object storage;  // ClientChunkCache.Storage -- shadowed as Object to avoid package-private type
+    public Object storage;
 
-    /** Public accessor for the storage field. */
     public static Object getStorage(ClientChunkCache cache) {
         return ((ClientChunkCacheMixin) (Object) cache).storage;
     }
 
-    /**
-     * Clamp the view radius to the configured [min, max] range.
-     */
     @ModifyVariable(
             method = "updateViewRadius",
             at = @At("HEAD"),
@@ -43,7 +36,7 @@ public abstract class ClientChunkCacheMixin {
         int max = ChuckLiteConfig.maxRenderDistance();
         int clamped = Mth.clamp(rawDistance, min, max);
         if (clamped != rawDistance) {
-            LOGGER.debug("Clamped render distance {} → {}", rawDistance, clamped);
+            LOGGER.debug("Clamped render distance {} to {}", rawDistance, clamped);
         }
         return clamped;
     }

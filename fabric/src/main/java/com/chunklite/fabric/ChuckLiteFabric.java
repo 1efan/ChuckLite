@@ -14,14 +14,6 @@ import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Fabric entrypoint for ChuckLite.
- *
- * <p>Registers client-tick and disconnect handlers, plus the
- * {@code /chunk-lite} command. The core optimization engine is
- * shared with the Forge variant via the {@code com.chunklite}
- * package.</p>
- */
 public class ChuckLiteFabric implements ClientModInitializer {
 
     public static final String MOD_ID = "chunk-lite";
@@ -35,14 +27,12 @@ public class ChuckLiteFabric implements ClientModInitializer {
         optimizer = new ClientChunkOptimizer();
         LOGGER.info("ChuckLite v1.01 (Fabric) optimizer ready.");
 
-        // Tick handler
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (optimizer != null) {
                 optimizer.tick();
             }
         });
 
-        // Disconnect handler
         ClientPlayConnectionEvents.DISCONNECT.register((handler, c) -> {
             if (optimizer != null) {
                 optimizer.onDisconnect();
@@ -50,7 +40,6 @@ public class ChuckLiteFabric implements ClientModInitializer {
             }
         });
 
-        // Commands
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
                     ClientCommandManager.literal("chunk-lite")
@@ -65,14 +54,12 @@ public class ChuckLiteFabric implements ClientModInitializer {
         });
     }
 
-    // ── Command implementations ────────────────────────────────
-
     private static int status(net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource src) {
         if (optimizer == null) {
             send(src, "§cChuckLite optimizer not initialized.");
             return 0;
         }
-        send(src, "§6ChuckLite §av1.01§r — by §b1efan§r (Fabric)");
+        send(src, "§6ChuckLite §av1.01§r - by §b1efan§r (Fabric)");
         send(src, "  Throttling : " + b(ChuckLiteConfig.throttleEnabled()));
         send(src, "  Directional: " + b(ChuckLiteConfig.directionalUnload()));
         send(src, "  Memory-aware: " + b(ChuckLiteConfig.memoryAware()));
