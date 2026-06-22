@@ -49,7 +49,7 @@ on a server.
 ## Installation
 
 1. Install Forge (47+) or Fabric (0.14+) for Minecraft 1.20.x
-2. Download `chunk-lite-1.2.0.jar` from [Releases](https://github.com/1efan/ChuckLite/releases)
+2. Download `chunk-lite-1.01.jar` from [Releases](https://github.com/1efan/ChuckLite/releases)
 3. Drop it into `.minecraft/mods/`
 4. Launch the game. ChuckLite works right away with sensible defaults
 
@@ -96,14 +96,14 @@ Prerequisites: Java 17 JDK
 ```bash
 git clone https://github.com/1efan/ChuckLite.git
 cd ChuckLite
-./gradlew build      # outputs build/libs/chunk-lite-1.2.0.jar
+./gradlew build      # outputs build/libs/chunk-lite-1.01.jar
 ./gradlew runClient  # launch in dev
 ```
 
 ### Fabric
 ```bash
 cd ChuckLite/fabric
-./gradlew build      # outputs fabric/build/libs/chunk-lite-1.2.0.jar
+./gradlew build      # outputs fabric/build/libs/chunk-lite-1.01.jar
 ./gradlew runClient
 ```
 
