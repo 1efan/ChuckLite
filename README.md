@@ -22,7 +22,7 @@
 ---
 
 Reduces memory overhead and improves frame times by intelligently managing
-chunk load cycles. Works entirely client-side -- nothing needs to be installed
+chunk load cycles. Everything runs client-side, so nothing needs to be installed
 on a server.
 
 ## Features
@@ -34,7 +34,7 @@ on a server.
 | Memory-pressure response | Aggressively unloads distant chunks when heap exceeds the configured threshold |
 | Render-distance clamping | Caps the server's view distance to protect weaker hardware |
 | In-game monitoring | `/chunk-lite stats` shows loaded chunks, heap usage, and throttle state |
-| Zero server impact | All optimizations are strictly client-side -- works on vanilla, Hypixel, everywhere |
+| Zero server impact | All optimizations are strictly client-side, so it works on vanilla, Hypixel, and anywhere else |
 
 ## Compatibility
 
@@ -51,29 +51,29 @@ on a server.
 1. Install Forge (47+) or Fabric (0.14+) for Minecraft 1.20.x
 2. Download `chunk-lite-1.2.0.jar` from [Releases](https://github.com/1efan/ChuckLite/releases)
 3. Drop it into `.minecraft/mods/`
-4. Launch the game -- ChuckLite works immediately with sensible defaults
+4. Launch the game. ChuckLite works right away with sensible defaults
 
 No server install required.
 
 ## Configuration
 
-Edit `.minecraft/config/chuck-lite.properties` -- changes take effect immediately.
+Edit `.minecraft/config/chuck-lite.properties`. Changes take effect immediately.
 
 ```properties
-# Throttling -- cap chunk processing during join
+# Throttling: cap chunk processing during join
 throttle.enabled=true
 throttle.maxPerTick=12
 
-# Directional unloading -- keep what you look at
+# Directional unloading: keep what you look at
 directional.enabled=true
 directional.retentionAngle=120
 
-# Memory pressure -- aggressive unload when heap is full
+# Memory pressure: aggressive unload when heap is full
 memory.enabled=true
 memory.thresholdPercent=75
 memory.aggressiveUnloadCount=8
 
-# Render distance -- clamp server view distance
+# Render distance: clamp server view distance
 renderDistance.enabled=false
 renderDistance.min=2
 renderDistance.max=16
@@ -109,7 +109,7 @@ cd ChuckLite/fabric
 
 ## License
 
-MIT -- (c) 2024 1efan
+Licensed under the MIT License. Copyright (c) 1efan.
 
 ---
 
