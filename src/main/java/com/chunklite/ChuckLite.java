@@ -46,7 +46,7 @@ public class ChuckLite {
     public void onClientSetup(FMLClientSetupEvent event) {
         ChuckLiteConfig.reload();
         optimizer = new ClientChunkOptimizer();
-        LOGGER.info("ChuckLite v{} optimizer ready.", "1.01");
+        LOGGER.info("ChuckLite v{} optimizer ready.", "1.02");
     }
 
     @SubscribeEvent

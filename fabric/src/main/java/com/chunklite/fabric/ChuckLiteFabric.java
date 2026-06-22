@@ -25,7 +25,7 @@ public class ChuckLiteFabric implements ClientModInitializer {
     public void onInitializeClient() {
         ChuckLiteConfig.reload();
         optimizer = new ClientChunkOptimizer();
-        LOGGER.info("ChuckLite v1.01 (Fabric) optimizer ready.");
+        LOGGER.info("ChuckLite v1.02 (Fabric) optimizer ready.");
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (optimizer != null) {
@@ -59,7 +59,7 @@ public class ChuckLiteFabric implements ClientModInitializer {
             send(src, "§cChuckLite optimizer not initialized.");
             return 0;
         }
-        send(src, "§6ChuckLite §av1.01§r - by §b1efan§r (Fabric)");
+        send(src, "§6ChuckLite §av1.02§r - by §b1efan§r (Fabric)");
         send(src, "  Throttling : " + b(ChuckLiteConfig.throttleEnabled()));
         send(src, "  Directional: " + b(ChuckLiteConfig.directionalUnload()));
         send(src, "  Memory-aware: " + b(ChuckLiteConfig.memoryAware()));
