@@ -2,6 +2,14 @@
 
 All notable changes to ChuckLite will be documented in this file.
 
+## [1.02] - 2026-06-22
+
+### Fixed
+- Off-by-one chunk coordinate when computing the player's chunk at negative positions, which mis-centered the memory-pressure and force-unload routines
+
+### Added
+- Chunk load rate cap on Minecraft 26.1: when throttling is enabled, the client caps its chunk batch size to `throttle.maxPerTick`, smoothing out join spikes without blocking chunk loading
+
 ## [1.01] - 2026-06-21
 
 ### Fixed
@@ -22,5 +30,6 @@ All notable changes to ChuckLite will be documented in this file.
 - Forge 1.20.1+ support (loader 47+)
 - Fabric 1.20.1+ support (loader 0.14+)
 
+[1.02]: https://github.com/1efan/ChuckLite/releases/tag/v1.02
 [1.01]: https://github.com/1efan/ChuckLite/releases/tag/v1.01
 [1.00]: https://github.com/1efan/ChuckLite/releases/tag/v1.00
