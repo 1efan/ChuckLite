@@ -30,15 +30,13 @@ fabric/                         # Standalone Fabric build
 
 ## Making changes
 
-- Keep the mod client-side — no server dependencies
+- Keep the mod client-side, no server dependencies
 - Config changes should go through `ChuckLiteConfig`
-- Mixin targets are documented with SRG names in the comments
 - Test on both Forge and Fabric before opening a PR
 
 ## Code style
 
 - 4-space indentation
-- Javadoc on public methods
 - Follow the existing patterns in the codebase
 
 ## Pull requests
