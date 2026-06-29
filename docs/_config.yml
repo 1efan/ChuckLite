@@ -1,0 +1,8 @@
+title: ChuckLite
+description: Lightweight client-side chunk optimization for Minecraft.
+theme: jekyll-theme-cayman
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
