@@ -21,20 +21,49 @@
 
 ---
 
-Reduces memory overhead and improves frame times by intelligently managing
-chunk load cycles. Everything runs client-side, so nothing needs to be installed
-on a server.
+ChuckLite targets the two things that cause chunk-related lag on the client: the
+burst of work when many chunks arrive at once, and the memory those chunks keep
+holding after they leave your screen. It fixes both with three mechanisms, all
+running only on your game.
+
+### How it improves performance
+
+**Chunk-load throttling.** When you join a server, teleport, or move fast (elytra,
+boat, horse, `/tp`), the server streams a flood of chunks and the vanilla client
+tries to build them all in the same tick. That spike in a single frame is the
+classic "join stutter" and the freeze you get when fast-travelling. ChuckLite caps
+how many chunk builds run per client tick (12 by default) and queues the overflow,
+draining a few each tick so frame time stays flat instead of hitching. Nothing is
+discarded, the work is just spread across a handful of ticks.
+
+**Directional unloading.** Chunks behind your camera are not being rendered, but
+the vanilla client keeps them fully resident anyway. A few times a second ChuckLite
+drops the outer ring of chunks that fall outside a forward-facing cone (120 degrees
+by default), so the chunks you are actually looking at stay loaded while the ones
+behind you free up. Fewer resident chunks means lower memory use and less per-tick
+bookkeeping, which shows up as a higher, steadier frame rate.
+
+**Memory-pressure response.** Four times a second it reads JVM heap usage. If you
+cross a threshold (75% by default) it unloads the farthest chunks first, always
+keeping the inner half of your view radius intact, and nudges a rate-limited
+garbage collection. On lower-RAM machines this is what prevents the GC-thrash
+freezes and out-of-memory crashes that long play sessions otherwise build toward.
+
+Optionally it can clamp the effective render distance to a min/max range to protect
+weaker hardware. Everything is configurable and hot-reloads from disk, and because
+it is 100% client-side it works on vanilla servers, Hypixel, Realms, anywhere, with
+nothing installed server-side.
 
 ## Features
 
-| Feature | Description |
-|---------|-------------|
-| Smart directional unloading | Keeps chunks in your view direction longer, drops chunks behind you first |
-| Join-flood throttling | Spreads chunk processing across ticks when joining a server, eliminating load stutter |
-| Memory-pressure response | Aggressively unloads distant chunks when heap exceeds the configured threshold |
-| Render-distance clamping | Caps the server's view distance to protect weaker hardware |
-| In-game monitoring | `/chunk-lite stats` shows loaded chunks, heap usage, and throttle state |
-| Zero server impact | All optimizations are strictly client-side, so it works on vanilla, Hypixel, and anywhere else |
+| Feature | What it does |
+|---------|--------------|
+| Per-tick load throttling | Caps chunk builds per tick and queues the rest, so join floods and fast-travel are spread across ticks instead of stuttering in one frame |
+| Directional unloading | Drops the outer ring of chunks outside your forward view cone first, keeping what you look at loaded and freeing memory behind you |
+| Memory-pressure response | Watches JVM heap and unloads the farthest chunks (inner radius preserved) once usage crosses the threshold, then triggers a rate-limited GC |
+| Render-distance clamping | Optionally bounds the effective view distance to a min/max range to protect weaker hardware |
+| In-game monitoring | `/chunk-lite stats` shows loaded chunks, heap usage, and the throttle queue |
+| Zero server impact | All optimizations are strictly client-side, so it works on vanilla, Hypixel, Realms, and anywhere else |
 
 ## Compatibility
 
