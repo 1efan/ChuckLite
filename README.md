@@ -21,49 +21,48 @@
 
 ---
 
-ChuckLite targets the two things that cause chunk-related lag on the client: the
-burst of work when many chunks arrive at once, and the memory those chunks keep
-holding after they leave your screen. It fixes both with three mechanisms, all
-running only on your game.
+ChuckLite fixes two things that make chunks lag your client. One is the spike of
+work when a lot of chunks show up at once. The other is the memory those chunks
+keep using after they leave your screen. It handles both, and it only runs on your
+own game.
 
-### How it improves performance
+### How it helps your frame rate
 
-**Chunk-load throttling.** When you join a server, teleport, or move fast (elytra,
-boat, horse, `/tp`), the server streams a flood of chunks and the vanilla client
-tries to build them all in the same tick. That spike in a single frame is the
-classic "join stutter" and the freeze you get when fast-travelling. ChuckLite caps
-how many chunk builds run per client tick (12 by default) and queues the overflow,
-draining a few each tick so frame time stays flat instead of hitching. Nothing is
-discarded, the work is just spread across a handful of ticks.
+**Chunk loading gets spread out.** When you join a server, teleport, or move fast
+on an elytra or a horse, the server sends a big batch of chunks and the normal
+client tries to build all of them in the same tick. That is the stutter you feel
+on join and the freeze when you fast travel. ChuckLite limits how many chunks get
+built each tick (12 by default) and puts the rest in a queue, then works through
+that queue a few at a time. You still get every chunk, it just does not all land in
+one frame.
 
-**Directional unloading.** Chunks behind your camera are not being rendered, but
-the vanilla client keeps them fully resident anyway. A few times a second ChuckLite
-drops the outer ring of chunks that fall outside a forward-facing cone (120 degrees
-by default), so the chunks you are actually looking at stay loaded while the ones
-behind you free up. Fewer resident chunks means lower memory use and less per-tick
-bookkeeping, which shows up as a higher, steadier frame rate.
+**Chunks behind you get dropped first.** You are not looking at the chunks behind
+your head, but the normal client keeps them loaded anyway. Every few ticks ChuckLite
+unloads the far ring of chunks that sit outside the cone you are facing (120 degrees
+by default). The chunks in front of you stay, the ones behind you go, and both your
+memory and your frame rate get some breathing room.
 
-**Memory-pressure response.** Four times a second it reads JVM heap usage. If you
-cross a threshold (75% by default) it unloads the farthest chunks first, always
-keeping the inner half of your view radius intact, and nudges a rate-limited
-garbage collection. On lower-RAM machines this is what prevents the GC-thrash
-freezes and out-of-memory crashes that long play sessions otherwise build toward.
+**It backs off when memory gets tight.** Four times a second it checks how full the
+Java heap is. Once it passes the limit you set (75% by default) it starts unloading
+the farthest chunks, keeps the closer half of your view, and runs a garbage
+collection that will not fire again right away. If you do not have much RAM, this is
+the part that stops the long-session freezes and the out of memory crashes.
 
-Optionally it can clamp the effective render distance to a min/max range to protect
-weaker hardware. Everything is configurable and hot-reloads from disk, and because
-it is 100% client-side it works on vanilla servers, Hypixel, Realms, anywhere, with
-nothing installed server-side.
+You can also cap your render distance to a range if your hardware needs it. The
+settings live in a config file that reloads the moment you save it, and since none
+of this touches the server, it works on vanilla, Hypixel, Realms, or wherever you
+play.
 
 ## Features
 
 | Feature | What it does |
 |---------|--------------|
-| Per-tick load throttling | Caps chunk builds per tick and queues the rest, so join floods and fast-travel are spread across ticks instead of stuttering in one frame |
-| Directional unloading | Drops the outer ring of chunks outside your forward view cone first, keeping what you look at loaded and freeing memory behind you |
-| Memory-pressure response | Watches JVM heap and unloads the farthest chunks (inner radius preserved) once usage crosses the threshold, then triggers a rate-limited GC |
-| Render-distance clamping | Optionally bounds the effective view distance to a min/max range to protect weaker hardware |
-| In-game monitoring | `/chunk-lite stats` shows loaded chunks, heap usage, and the throttle queue |
-| Zero server impact | All optimizations are strictly client-side, so it works on vanilla, Hypixel, Realms, and anywhere else |
+| Per-tick load throttling | Builds a set number of chunks each tick and queues the rest, so join floods and fast travel spread out instead of stuttering in one frame |
+| Directional unloading | Unloads the far ring of chunks behind you first and keeps the ones you are facing, so memory frees up without changing what you see |
+| Memory-pressure response | Watches the Java heap and unloads the farthest chunks once it gets too full, keeps the closer half of your view, then runs a spaced-out GC |
+| Render-distance clamping | Optional cap that holds your view distance inside a min and max range for weaker hardware |
+| In-game monitoring | `/chunk-lite stats` shows loaded chunks, heap usage, and the queue |
+| Zero server impact | Everything runs on your client, so it works on vanilla servers, Hypixel, Realms, and anywhere else |
 
 ## Compatibility
 
