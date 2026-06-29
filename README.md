@@ -33,20 +33,20 @@ on an elytra or a horse, the server sends a big batch of chunks and the normal
 client tries to build all of them in the same tick. That is the stutter you feel
 on join and the freeze when you fast travel. ChuckLite limits how many chunks get
 built each tick (12 by default) and puts the rest in a queue, then works through
-that queue a few at a time. You still get every chunk, it just does not all land in
+that queue a few at a time. You still get every chunk. It just does not all land in
 one frame.
 
 **Chunks behind you get dropped first.** You are not looking at the chunks behind
 your head, but the normal client keeps them loaded anyway. Every few ticks ChuckLite
 unloads the far ring of chunks that sit outside the cone you are facing (120 degrees
-by default). The chunks in front of you stay, the ones behind you go, and both your
-memory and your frame rate get some breathing room.
+by default). The chunks in front of you stay while the ones behind you go, which
+gives both your memory and your frame rate some breathing room.
 
 **It backs off when memory gets tight.** Four times a second it checks how full the
-Java heap is. Once it passes the limit you set (75% by default) it starts unloading
+Java heap is. Once it passes the limit you set (75% by default), it starts unloading
 the farthest chunks, keeps the closer half of your view, and runs a garbage
 collection that will not fire again right away. If you do not have much RAM, this is
-the part that stops the long-session freezes and the out of memory crashes.
+the part that stops the long-session freezes and the out-of-memory crashes.
 
 You can also cap your render distance to a range if your hardware needs it. The
 settings live in a config file that reloads the moment you save it, and since none
