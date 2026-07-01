@@ -15,6 +15,7 @@ layout: none
     html,
     body {
       width: 100%;
+      height: 100%;
       margin: 0;
       padding: 0;
       background: #050505;
@@ -26,9 +27,23 @@ layout: none
 
       position: relative;
       width: 100vw;
-      aspect-ratio: 21 / 9;
+      height: 300px;
       overflow: hidden;
       background: #050505;
+    }
+
+    @media (max-width: 700px) {
+      .chunklite-compare {
+        height: 220px;
+      }
+
+      .chunklite-badge strong {
+        font-size: 12px;
+      }
+
+      .chunklite-badge small {
+        font-size: 11px;
+      }
     }
 
     .chunklite-img {
