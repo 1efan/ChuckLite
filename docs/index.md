@@ -8,12 +8,15 @@ Sodium, Lithium, Iris, and OptiFine.
 
 ## How it helps your frame rate
 
-**Chunk loading gets spread out.** When you join a server, teleport, or move fast on
-an elytra or a horse, the server sends a big batch of chunks and the normal client
-tries to build all of them in the same tick. That is the stutter you feel on join
-and the freeze when you fast travel. ChuckLite limits how many chunks get built each
-tick (12 by default) and puts the rest in a queue, then works through that queue a
-few at a time. You still get every chunk. It just does not all land in one frame.
+**Chunk uploads get spread out, and the amount adapts to your frame rate.** When you
+join a server, teleport, or move fast on an elytra or a horse, a flood of chunk meshes
+finishes at once and the normal client uploads all of them to the GPU on a single
+frame. That is the stutter you feel on join and the freeze when you fast travel.
+ChuckLite caps how many uploads happen per frame and lets the rest wait for the next
+frames. The cap is not a fixed number: it tracks a rolling average of your frame time
+against a target FPS, uploading more when frames run fast and fewer when they dip.
+Nothing is dropped, it just spreads across frames. When Sodium (or Embeddium /
+Rubidium) is installed it owns the chunk render pipeline, so ChuckLite steps aside.
 
 **Chunks behind you get dropped first.** You are not looking at the chunks behind
 your head, but the normal client keeps them loaded anyway. Every few ticks ChuckLite
@@ -33,7 +36,7 @@ You can also cap your render distance to a range if your hardware needs it.
 
 | Feature | What it does |
 |---------|--------------|
-| Per-tick load throttling | Builds a set number of chunks each tick and queues the rest, so join floods and fast travel spread out instead of stuttering in one frame |
+| Adaptive frame-budget throttling | Caps chunk GPU uploads per frame to a budget that tracks your frame time and target FPS, so join floods and fast travel spread across frames instead of spiking one. Steps aside when Sodium owns the render path |
 | Directional unloading | Unloads the far ring of chunks behind you first and keeps the ones you are facing, so memory frees up without changing what you see |
 | Memory-pressure response | Watches the Java heap and unloads the farthest chunks once it gets too full, keeps the closer half of your view, then runs a spaced-out GC |
 | Render-distance clamping | Optional cap that holds your view distance inside a min and max range for weaker hardware |

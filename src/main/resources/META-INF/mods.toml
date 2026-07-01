@@ -7,10 +7,10 @@ license = "MIT"
 issueTrackerURL = "https://github.com/1efan/ChuckLite/issues"
 
 [[mods]]
-modId = "chunk-lite"
+modId = "chunklite"
 version = "${file.jarVersion}"
 displayName = "ChuckLite"
-logoFile = "icon.png"
+logoFile = "assets/chunklite/icon.png"
 credits = "Thanks to the Minecraft optimization community"
 authors = "1efan"
 description = '''
@@ -24,14 +24,14 @@ Features:
 Configure via .minecraft/config/chuck-lite.properties
 '''
 
-[[dependencies.chunk-lite]]
+[[dependencies.chunklite]]
     modId = "forge"
     mandatory = true
     versionRange = "[47,)"
     ordering = "NONE"
     side = "CLIENT"
 
-[[dependencies.chunk-lite]]
+[[dependencies.chunklite]]
     modId = "minecraft"
     mandatory = true
     versionRange = "[1.20.1,1.21)"

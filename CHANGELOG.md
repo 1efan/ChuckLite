@@ -2,6 +2,21 @@
 
 All notable changes to ChuckLite will be documented in this file.
 
+## [1.04] - 2026-06-30
+
+### Fixed
+- Invalid mod id on Forge. The id was `chunk-lite`, but Forge requires `^[a-z][a-z0-9_]{1,63}$` with no hyphens, so the Forge jar failed to load with "Invalid modId found : chunk-lite". Renamed the Forge id to `chunk_lite` while keeping the public jar name as `chunk-lite`. Thanks to @jacknor7frost for the report (#1).
+
+### Added
+- Adaptive frame-budget throttling. Instead of a fixed per-tick cap, ChuckLite now caps chunk GPU uploads per frame to a budget that tracks a rolling average of your frame time against a target FPS: fast frames upload more, slow frames upload fewer, so join floods and fast travel spread across frames instead of spiking one. Nothing is dropped, only deferred.
+- Sodium awareness: the throttle detects Sodium (and the Embeddium / Rubidium ports) and steps aside automatically, since Sodium owns the chunk render pipeline.
+- New config keys: `throttle.adaptive`, `throttle.targetFps`, `throttle.minPerFrame`, `throttle.maxPerFrame`. The old `throttle.maxPerTick` is now the fixed fallback used only when `throttle.adaptive=false`.
+- `/chunk-lite stats` now reports live frame time and the current adaptive budget.
+- Adaptive throttling across all supported loaders: Forge and Fabric on 1.20.1 and 1.21.1 (per-frame GPU upload budget), and NeoForge and Fabric on 26.1 (adaptive chunk-batch rate, since 26.1's reworked render pipeline has no per-section upload queue to drain).
+
+### Changed
+- Corrected the "per-tick load throttling" wording in the README and docs: the active mechanism is the adaptive frame budget described above.
+
 ## [1.02] - 2026-06-22
 
 ### Fixed

@@ -7,11 +7,13 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkConstants;
 import org.slf4j.Logger;
@@ -20,7 +22,7 @@ import org.slf4j.LoggerFactory;
 @Mod(ChuckLite.MOD_ID)
 public class ChuckLite {
 
-    public static final String MOD_ID = "chunk-lite";
+    public static final String MOD_ID = "chunklite";
     public static final Logger LOGGER = LoggerFactory.getLogger("ChuckLite");
 
     public static ClientChunkOptimizer optimizer;
@@ -39,14 +41,25 @@ public class ChuckLite {
                 )
         );
 
+        // setup is a mod-bus event, tick/command/logout are forge-bus
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener(this::onClientSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @SubscribeEvent
-    public void onClientSetup(FMLClientSetupEvent event) {
+    private void onClientSetup(FMLClientSetupEvent event) {
         ChuckLiteConfig.reload();
         optimizer = new ClientChunkOptimizer();
-        LOGGER.info("ChuckLite v{} optimizer ready.", "1.02");
+        LOGGER.info("ChuckLite v{} optimizer ready (Sodium present: {}).", "1.03",
+                com.chunklite.compat.ModCompat.sodiumPresent());
+    }
+
+    @SubscribeEvent
+    public void onRenderTick(TickEvent.RenderTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        if (optimizer != null) {
+            optimizer.onFrame(System.nanoTime());
+        }
     }
 
     @SubscribeEvent

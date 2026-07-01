@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[52,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/1efan/ChuckLite/issues"
+
+[[mods]]
+modId = "chunklite"
+version = "${file.jarVersion}"
+displayName = "ChuckLite"
+logoFile = "assets/chunklite/icon.png"
+credits = "Thanks to the Minecraft optimization community"
+authors = "1efan"
+description = '''
+Lightweight chunk optimization mod. Reduces memory overhead and improves frame times by intelligently managing chunk load cycles.
+
+Features:
+- Directional chunk unloading based on where you are looking
+- Memory-aware aggressive unloading under heap pressure
+- Optional render distance clamping
+
+Configure via .minecraft/config/chuck-lite.properties
+'''
+
+[[mixins]]
+config = "chunk-lite.mixins.json"
+
+[[dependencies.chunklite]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[52,)"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.chunklite]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.21.1,1.22)"
+    ordering = "NONE"
+    side = "CLIENT"

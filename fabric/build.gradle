@@ -10,6 +10,13 @@ base {
     archivesName = mod_id
 }
 
+// generate the refmap under the name the mixin config declares, else fabric prod cant find it
+loom {
+    mixin {
+        defaultRefmapName = "chuck-lite.refmap.json"
+    }
+}
+
 repositories {
     mavenCentral()
     maven { url = 'https://maven.terraformersmc.com/releases/' }

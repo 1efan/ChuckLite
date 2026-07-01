@@ -5,8 +5,8 @@
     "compatibilityLevel": "JAVA_17",
     "refmap": "chuck-lite.refmap.json",
     "client": [
-        "ClientChunkCacheMixin",
-        "ChunkStorageAccessor"
+        "ChunkRenderDispatcherMixin",
+        "ClientChunkCacheMixin"
     ],
     "injectors": {
         "defaultRequire": 1

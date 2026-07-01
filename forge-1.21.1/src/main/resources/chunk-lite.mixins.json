@@ -1,0 +1,13 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.chunklite.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "client": [
+        "ChunkRenderDispatcherMixin",
+        "ClientChunkCacheMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

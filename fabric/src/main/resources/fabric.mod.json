@@ -1,6 +1,6 @@
 {
     "schemaVersion": 1,
-    "id": "chunk-lite",
+    "id": "chunklite",
     "version": "${version}",
     "name": "ChuckLite",
     "description": "Lightweight chunk optimization mod. Reduces memory overhead and improves frame times by intelligently managing chunk load cycles.",
@@ -11,7 +11,7 @@
         "issues": "https://github.com/1efan/ChuckLite/issues"
     },
     "license": "MIT",
-    "icon": "assets/chunk-lite/icon.png",
+    "icon": "assets/chunklite/icon.png",
     "environment": "client",
     "entrypoints": {
         "client": [

@@ -7,8 +7,14 @@ is written with sensible defaults the first time you launch, and any change you 
 takes effect as soon as you save it. There is nothing to restart.
 
 ```properties
-# Throttling: spread chunk building across ticks
+# Throttling: spread chunk GPU uploads across frames during join floods
 throttle.enabled=true
+# Adaptive frame-budget throttling (recommended): scales work to your frame rate
+throttle.adaptive=true
+throttle.targetFps=60
+throttle.minPerFrame=4
+throttle.maxPerFrame=64
+# Fallback fixed cap, used only when throttle.adaptive=false
 throttle.maxPerTick=12
 
 # Directional unloading: keep what you look at, drop what is behind you
@@ -30,8 +36,12 @@ renderDistance.max=16
 
 | Setting | Default | Range | Meaning |
 |---------|---------|-------|---------|
-| `throttle.enabled` | true | on/off | Turn the per-tick load limit on or off |
-| `throttle.maxPerTick` | 12 | 1 to 50 | How many chunks may be built in a single tick before the rest wait |
+| `throttle.enabled` | true | on/off | Master switch for upload throttling |
+| `throttle.adaptive` | true | on/off | Scale uploads to frame time instead of a fixed cap (recommended). No-op when Sodium owns the render path |
+| `throttle.targetFps` | 60 | 15 to 240 | The frame rate the budget aims to protect |
+| `throttle.minPerFrame` | 4 | 1 to 64 | Lowest per-frame upload budget, so chunks never fully stall |
+| `throttle.maxPerFrame` | 64 | 1 to 256 | Highest per-frame upload budget, so a flood cannot all land at once |
+| `throttle.maxPerTick` | 12 | 1 to 50 | Fixed fallback cap, used only when `throttle.adaptive=false` |
 | `directional.enabled` | true | on/off | Turn directional unloading on or off |
 | `directional.retentionAngle` | 120 | 60 to 180 | Width of the forward cone whose chunks are kept. Smaller drops more behind you |
 | `memory.enabled` | true | on/off | Turn the memory-pressure response on or off |
