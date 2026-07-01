@@ -1,0 +1,197 @@
+---
+layout: none
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChunkLite Comparison</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: #050505;
+      overflow: hidden;
+    }
+
+    .chunklite-compare {
+      --position: 50%;
+
+      position: relative;
+      width: 100vw;
+      aspect-ratio: 21 / 9;
+      overflow: hidden;
+      background: #050505;
+    }
+
+    .chunklite-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .chunklite-base {
+      z-index: 1;
+    }
+
+    .chunklite-top {
+      z-index: 2;
+      clip-path: inset(0 calc(100% - var(--position)) 0 0);
+      transition: clip-path 0.12s ease-out;
+    }
+
+    .chunklite-divider {
+      position: absolute;
+      top: 0;
+      left: var(--position);
+      width: 2px;
+      height: 100%;
+      z-index: 5;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      transition: left 0.12s ease-out;
+    }
+
+    .chunklite-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 38px;
+      height: 38px;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: rgba(20, 20, 20, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .chunklite-handle::before,
+    .chunklite-handle::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+    }
+
+    .chunklite-handle::before {
+      left: 11px;
+      transform: translateY(-50%) rotate(-45deg);
+    }
+
+    .chunklite-handle::after {
+      right: 11px;
+      transform: translateY(-50%) rotate(135deg);
+    }
+
+    .chunklite-badge {
+      position: absolute;
+      top: 12px;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 7px 11px;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      line-height: 1.1;
+      background: rgba(8, 10, 12, 0.58);
+      border-radius: 6px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .chunklite-badge strong {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .chunklite-badge small {
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0.88;
+    }
+
+    .chunklite-badge-left {
+      left: 12px;
+    }
+
+    .chunklite-badge-right {
+      right: 12px;
+      text-align: right;
+    }
+
+    .chunklite-slider {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: ew-resize;
+    }
+  </style>
+</head>
+<body>
+  <div class="chunklite-compare">
+    <img
+      class="chunklite-img chunklite-base"
+      src="https://github.com/1efan/ChuckLite/blob/main/assets/before.png?raw=true"
+      alt="Vanilla"
+    >
+
+    <img
+      class="chunklite-img chunklite-top"
+      src="https://github.com/1efan/ChuckLite/blob/main/assets/after.png?raw=true"
+      alt="ChunkLite + Compatibles"
+    >
+
+    <div class="chunklite-divider">
+      <div class="chunklite-handle"></div>
+    </div>
+
+    <div class="chunklite-badge chunklite-badge-left">
+      <strong>ChunkLite + Compatibles</strong>
+      <small>140 FPS</small>
+    </div>
+
+    <div class="chunklite-badge chunklite-badge-right">
+      <strong>Vanilla</strong>
+      <small>92 FPS</small>
+    </div>
+
+    <input
+      class="chunklite-slider"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      aria-label="Before and after comparison slider"
+    >
+  </div>
+
+  <script>
+    const compare = document.querySelector(".chunklite-compare");
+    const slider = document.querySelector(".chunklite-slider");
+
+    slider.addEventListener("input", () => {
+      compare.style.setProperty("--position", `${slider.value}%`);
+    });
+  </script>
+</body>
+</html>
