@@ -1,0 +1,29 @@
+{
+    "schemaVersion": 1,
+    "id": "chunklite",
+    "version": "${version}",
+    "name": "ChuckLite",
+    "description": "Lightweight chunk optimization mod. Reduces memory overhead and improves frame times by intelligently managing chunk load cycles.",
+    "authors": ["1efan"],
+    "contact": {
+        "homepage": "https://github.com/1efan/ChuckLite",
+        "sources": "https://github.com/1efan/ChuckLite",
+        "issues": "https://github.com/1efan/ChuckLite/issues"
+    },
+    "license": "MIT",
+    "icon": "assets/chunklite/icon.png",
+    "environment": "client",
+    "entrypoints": {
+        "client": [
+            "com.chunklite.fabric.ChuckLiteFabric"
+        ]
+    },
+    "mixins": [
+        "chunk-lite.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.18.4",
+        "minecraft": ">=26.2 <26.3",
+        "fabric-api": "*"
+    }
+}

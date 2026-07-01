@@ -9,7 +9,7 @@ Reduces memory overhead and improves frame times by intelligently managing chunk
 | Loader | Versions |
 |--------|----------|
 | Forge | 1.20.1, 1.21.1 |
-| Fabric | 1.20.1, 1.21.1 |
+| Fabric | 1.20.1, 1.21.1, 26.2 |
 
 ## Features
 
